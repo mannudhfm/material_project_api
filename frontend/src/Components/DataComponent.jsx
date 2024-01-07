@@ -4,7 +4,7 @@ import PeriodicTable from './PeriodicTable';
 import '../App.css'
 import Pagination from './Pagination';
 import { BASE_URL, _fields } from '../utils';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function DataComponent() {
   const [materialData, setMaterialData] = useState([])
