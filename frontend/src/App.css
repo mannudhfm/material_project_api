@@ -127,10 +127,12 @@ tr {
   padding-left: 10px;
   margin-bottom: 2px;
   width: 100%;
+  font-size: 15px;
 }
 
 td {
   padding: .2rem;
+  font-size: 15px;
 }
 
 .ele-data {

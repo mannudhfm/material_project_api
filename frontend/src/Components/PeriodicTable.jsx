@@ -46,6 +46,7 @@ const PeriodicTable = ({ searchInput, setSearchInput, handleSearchEnter, handleK
 
     const handleClickElement = (ele) => {
         setSelectedElement(ele)
+        setSearchInput('')
         // if (selectedElement === elementsArray[1]) {
         //     setSeparator(separatorTwo)
         // } else if (selectedElement === elementsArray[2]) {
@@ -53,9 +54,9 @@ const PeriodicTable = ({ searchInput, setSearchInput, handleSearchEnter, handleK
         // }
     }
 
-    const handleStarClick = () => {
-        setSearchInput(prevValue => [...prevValue, "*"]);
-    }
+    // const handleStarClick = () => {
+    //     setSearchInput(prevValue => [...prevValue, "*"]);
+    // }
 
     const handleNumberClick = (num) => {
         setSearchInput(prevValue => [...prevValue, num]);
@@ -88,7 +89,7 @@ const PeriodicTable = ({ searchInput, setSearchInput, handleSearchEnter, handleK
                         ))}
                     </div>
                     <div className="box-star">
-                        <h2 onClick={handleStarClick}>*</h2>
+                        <h2>*</h2>
                     </div>
                     <div className='child-elements'>
                         {selectedElement === elementsArray[0] &&

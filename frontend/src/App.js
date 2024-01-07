@@ -8,7 +8,6 @@ const App = () => {
       <div className='APP'>
         <Routes>
           <Route path='/materials/summary' exact element={<DataComponent />} />
-          {/* <Route path='/materials/summary/:query' exact element={<DataComponent />} /> */}
         </Routes>
       </div>
     </Router>

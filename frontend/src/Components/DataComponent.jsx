@@ -102,6 +102,9 @@ function DataComponent() {
                     <th className='th'>Sites</th>
                     <th className='th'>Energy Above Hull</th>
                     <th className='th'>Band Gap</th>
+                    <th className='th'>Species</th>
+                    <th className='th'>Density</th>
+                    <th className='th'>Ordering</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -116,6 +119,9 @@ function DataComponent() {
                         <td>{ele.nsites}</td>
                         <td>{ele.energy_above_hull.toFixed(2)}</td>
                         <td>{ele.band_gap.toFixed(2)}</td>
+                        <td>{ele.possible_species}</td>
+                        <td>{ele.density.toFixed()}</td>
+                        <td>{ele.ordering}</td>
                       </tr>
                     ))}
                 </tbody>
