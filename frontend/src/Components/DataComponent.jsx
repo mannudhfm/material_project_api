@@ -4,6 +4,7 @@ import PeriodicTable from './PeriodicTable';
 import '../App.css'
 import Pagination from './Pagination';
 import { BASE_URL, _fields } from '../utils';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 function DataComponent() {
   const [materialData, setMaterialData] = useState([])
@@ -12,14 +13,25 @@ function DataComponent() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchInput, setSearchInput] = useState('')
   const [isLoading, setIsLoading] = useState(true);
+  const [clickEnter, setClickEnter] = useState(false);
+  const containsNumbers = /\d/.test(searchInput);
+
+  const navigate = useNavigate();
+
+  const totalItems = totalDoc.total_doc
+  const itemsPerPageChanged = itemsPerPage === 10
+  console.log(itemsPerPageChanged)
+
+  const endPoint = containsNumbers ? `formula=${searchInput}` : `chemsys=${searchInput}`
+
+  const activeEndPoint = searchInput !== '' ? endPoint : ''
 
   const fetchmaterialData = useCallback(async () => {
-    const activeEndPoint = searchInput !== '' ? `chemsys=${searchInput}` : ''
     try {
       const { data } = await axios.get(`${BASE_URL}/${activeEndPoint}&_page=${currentPage}&_per_page=${itemsPerPage}&_fields=${_fields}`);
       setMaterialData(data.data)
       setTotalDoc(data.meta)
-      setIsLoading(true)
+      setIsLoading(false)
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -27,40 +39,58 @@ function DataComponent() {
 
   const handleSearchEnter = () => {
     fetchmaterialData()
+    setClickEnter(!clickEnter)
   }
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       fetchmaterialData()
-      console.log("clicked")
+      setClickEnter(!clickEnter)
     }
   }
 
   useEffect(() => {
     fetchmaterialData()
-  }, [currentPage, itemsPerPage])
+  }, [itemsPerPage, currentPage])
 
   console.log(materialData)
+  console.log(itemsPerPage)
+  console.log(currentPage)
+  console.log(totalItems)
 
   return (
-    <div className='data-component'>
+    <div to='' className='data-component' style={{ textDecoration: "none", color: "black" }}>
       <div>
         <h1>The Materials Project</h1>
       </div>
       <PeriodicTable searchInput={searchInput} setSearchInput={setSearchInput} handleSearchEnter={handleSearchEnter} handleKeyDown={handleKeyDown} />
       <div className='material-container'>
         <div className='data-header'>
-          <p> {isLoading && searchInput !== '' ? `${totalDoc.total_doc} Materials Match your search...` : <p>{`All ${totalDoc.total_doc} Materials`}</p>}</p>
-          <p>
-            {isLoading && materialData.length > 1 ?
-              /* <p>{`Showing ${currentPage === 1 ? '1' : (currentPage * itemsPerPage) - (itemsPerPage - 1)}-${currentPage * itemsPerPage}`}</p>  */
-              <p>{`1-${currentPage * itemsPerPage}`}</p>
-              : <h3>Loading...</h3>
+          <div>
+            {isLoading ?
+              <h3>Loading...</h3> :
+              <div>
+                {clickEnter && searchInput !== '' && isLoading
+                  ?
+                  <h3>{materialData.length} Materials Match your search</h3>
+                  :
+                  <h3>All <span>{`${totalDoc.total_doc} Materials`}</span></h3>
+                }
+              </div>
             }
-          </p>
+            {!isLoading &&
+              <div>
+                <h4>Showing {
+                  (currentPage === 1)
+                    ? `${materialData.length === 0 ? "0" : currentPage} - ${Math.min(currentPage * itemsPerPage, totalItems)}`
+                    : `${currentPage * itemsPerPage - itemsPerPage + 1}- ${Math.min(currentPage * itemsPerPage, totalItems)}`
+                }</h4>
+              </div>
+            }
+          </div>
         </div>
         <div className='material-data'>
-          {materialData.length !== 0 &&
+          {!isLoading && materialData.length !== 0 &&
             <div className='data_field'>
               <table border={1}>
                 <thead>
@@ -94,7 +124,9 @@ function DataComponent() {
           }
         </div>
       </div>
-      <Pagination materialData={materialData} currentPage={currentPage} setCurrentPage={setCurrentPage} totalDoc={totalDoc} itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />
+      {materialData.length !== 0 &&
+        <Pagination materialData={materialData} currentPage={currentPage} setCurrentPage={setCurrentPage} totalDoc={totalDoc} itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />
+      }
     </div>
   );
 }

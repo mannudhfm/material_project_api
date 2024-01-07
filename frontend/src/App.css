@@ -39,9 +39,15 @@
   border: solid 1px gray;
 }
 
-.search-div p:nth-child(3) {
+.search-div button {
   background-color: rgb(67, 210, 217);
+  padding: 1rem;
+  color: black;
+  border: solid 1px gray;
+  font-size: 1.1rem;
   cursor: pointer;
+  font-weight: 500;
+
 }
 
 .periodic-table {
@@ -231,6 +237,7 @@ td {
   padding: 5px 10px;
   margin: 0 5px;
   background-color: #e8e8e8;
+  opacity: 1;
 }
 
 .next {
@@ -241,6 +248,7 @@ td {
   padding: 5px 10px;
   margin: 0 5px;
   background-color: #e8e8e8;
+  opacity: 1;
 }
 
 .break-label {
@@ -255,7 +263,7 @@ td {
 
 .disabled {
   cursor: not-allowed;
-  opacity: 0.8;
+  opacity: 0.5;
 }
 
 .page-div select {
@@ -270,4 +278,100 @@ td {
 .page-div select option {
   font-size: 1rem;
   cursor: pointer;
+}
+
+.periodic-table .pt-elements {
+  position: relative;
+  left: 10rem;
+  display: flex;
+  justify-content: center;
+  width: 400px;
+
+}
+
+.periodic-table .pt-elements p:nth-child(1) {
+  border-left: solid 1px gray;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.periodic-table .pt-elements p {
+  padding: 8px 9px;
+  font-size: .9rem;
+  cursor: pointer;
+  border: solid 1px gray;
+}
+
+.periodic-table .pt-elements .not-active-element:hover {
+  background-color: rgb(221, 221, 221);
+}
+
+.periodic-table .pt-elements p:nth-child(3) {
+  border-right: solid 1px gray;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.active-element {
+  background-color: rgb(47, 151, 255);
+  cursor: pointer;
+}
+
+.box-star {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  left: 10.2rem;
+  top: 1.3rem;
+  width: 102px;
+  height: 100px;
+  border: solid 1px gray;
+  cursor: pointer;
+}
+
+.box-star:hover {
+  background-color: rgb(235, 235, 235);
+  transform: scale(1.15, 1.15);
+  z-index: 1;
+}
+
+.box-star h2 {
+  font-size: 2rem;
+}
+
+.not-display {
+  display: block;
+}
+
+.periodic-table .child-elements {
+  position: relative;
+  left: 16.8rem;
+  bottom: 5rem;
+  width: 320px;
+  height: 100px;
+  border: solid 1px gray;
+}
+
+.formula-numbers {
+  display: grid;
+  grid-template-columns: repeat(6, 53.1px);
+  grid-template-rows: repeat(6, 50px);
+  justify-content: center;
+}
+
+.formula-numbers p {
+  padding: 15px;
+  border: solid 1px gray;
+  cursor: pointer;
+}
+
+.formula-numbers p:hover {
+  background-color: rgb(235, 235, 235);
+  transform: scale(1.15, 1.15);
+  z-index: 1;
+}
+
+.child-ele {
+  padding: 1rem;
 }
