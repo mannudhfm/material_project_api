@@ -2,10 +2,10 @@ const express = require('express');
 const request = require('request')
 const cors = require('cors');
 const morgan = require('morgan');
-const dotenv = require('dotenv')
+const dotenv = require('dotenv');
 const app = express();
-const PORT = 3001;
 dotenv.config()
+const PORT = process.env.PORT;
 
 app.use(morgan('dev'));
 
@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(cors());
 app.options('*', cors());
 
-const apiKey = "P459uui34o90kmZM1TldYOLpzwxoOGbL"
+const apiKey = process.env.API_KEY
 
 let options = {
     json: true,
@@ -26,16 +26,6 @@ let options = {
 
 app.get('/materials/summary/:query', async (req, res) => {
     options['url'] = `https://api.materialsproject.org/materials/summary/?${req.params.query}`
-    options['method'] = 'GET'
-
-    request(options, (error, response, body) => {
-        res.status(response.statusCode).send(body)
-        res.status(error)
-    });
-});
-
-app.get('/materials/summary/:id/:query', async (req, res) => {
-    options['url'] = `https://api.materialsproject.org/materials/summary/${req.params.id}/?${req.params.query}`
     options['method'] = 'GET'
 
     request(options, (error, response, body) => {

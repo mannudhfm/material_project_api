@@ -13,7 +13,7 @@ const colorMap = {
     metalloid: "#73D2DE",
 };
 
-const PeriodicTable = ({ searchInput, setSearchInput, handleSearchEnter }) => {
+const PeriodicTable = ({ searchInput, setSearchInput, handleSearchEnter, handleKeyDown }) => {
 
     const [activeSymbol, setActiveSymbol] = useState(false)
 
@@ -22,9 +22,15 @@ const PeriodicTable = ({ searchInput, setSearchInput, handleSearchEnter }) => {
     }
 
     const handleClick = (value) => {
-        setSearchInput((prevValue) =>
-            prevValue === undefined ? value :
-                prevValue + "-" + value)
+
+        if (searchInput.includes(value)) {
+            setSearchInput((prevValue) =>
+                prevValue.replace(new RegExp(`-${value}?`), '')
+            )
+        } else {
+            setSearchInput((prevValue) =>
+                prevValue ? `${prevValue}-${value}` : value)
+        }
         setActiveSymbol(true)
     }
 
@@ -37,8 +43,10 @@ const PeriodicTable = ({ searchInput, setSearchInput, handleSearchEnter }) => {
                         placeholder='e.g. Li-Fe or Li,Fe or Li3Fe or mp-19017'
                         value={searchInput}
                         onChange={handleChange}
+                        onKeyDown={handleKeyDown}
                     />
-                    <p onClick={handleSearchEnter}>Search</p>
+                    <p onClick={handleSearchEnter} disabled={searchInput.trim() === ''}
+                    >Search</p>
                 </div>
             </div>
             <div className='periodic-table'>

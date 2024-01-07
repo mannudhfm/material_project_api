@@ -1,1 +1,2 @@
 export const _fields = "material_id,chemsys,formula_pretty,symmetry,possible_species,crystal_system,is_stable,theoretical,ordering,is_gap_direct,is_metal,nsites,density,energy_above_hull,band_gap"
+export const BASE_URL = "http://localhost:3001/materials/summary"

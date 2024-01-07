@@ -3,117 +3,98 @@ import axios from 'axios';
 import PeriodicTable from './PeriodicTable';
 import '../App.css'
 import Pagination from './Pagination';
-import { _fields } from '../utils';
+import { BASE_URL, _fields } from '../utils';
 
 function DataComponent() {
-  const [materials, setMaterials] = useState([]);
-  const [materialIdData, setMaterialIdData] = useState([])
+  const [materialData, setMaterialData] = useState([])
   const [totalDoc, setTotalDoc] = useState({})
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchInput, setSearchInput] = useState('')
+  const [isLoading, setIsLoading] = useState(true);
 
-  const fetchData = useCallback(async () => {
-    const activeEndPoint = searchInput !== '' ? `chemsys=${searchInput}` : "_limit=20"
+  const fetchmaterialData = useCallback(async () => {
+    const activeEndPoint = searchInput !== '' ? `chemsys=${searchInput}` : ''
     try {
-      const { data } = await axios.get(`http://localhost:3001/materials/summary/${activeEndPoint}`);
-      setMaterials(data.data);
+      const { data } = await axios.get(`${BASE_URL}/${activeEndPoint}&_page=${currentPage}&_per_page=${itemsPerPage}&_fields=${_fields}`);
+      setMaterialData(data.data)
       setTotalDoc(data.meta)
+      setIsLoading(true)
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  }, [fetchData])
-
-
-  const fetchMaterialIdData = useCallback(async (id) => {
-    try {
-      const { data } = await axios.get(`http://localhost:3001/materials/summary/${id}/material_id=${id}&_fields=${_fields}`);
-      setMaterialIdData((prevData) => ([
-        ...prevData,
-        data
-      ]))
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  }, [materials.length])
-
-  const fetchIdSequentially = useCallback(async () => {
-    const material_id = materials.map(element => element.material_id)
-    for (let i = 0; i < materials.length; i++) {
-      await fetchMaterialIdData(material_id[i])
-    }
-  }, [materials.length, fetchMaterialIdData])
-
-
-  // console.log(materials)
-  console.log(materialIdData)
-
-  useEffect(() => {
-    fetchData()
-    fetchIdSequentially()
-  }, [fetchData, fetchIdSequentially])
+  })
 
   const handleSearchEnter = () => {
-    fetchData()
-    fetchIdSequentially()
-    setMaterialIdData(materialIdData)
+    fetchmaterialData()
   }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      fetchmaterialData()
+      console.log("clicked")
+    }
+  }
+
+  useEffect(() => {
+    fetchmaterialData()
+  }, [currentPage, itemsPerPage])
+
+  console.log(materialData)
 
   return (
     <div className='data-component'>
-      <h1>Materials Project Data</h1>
-      <PeriodicTable searchInput={searchInput} setSearchInput={setSearchInput} handleSearchEnter={handleSearchEnter} />
+      <div>
+        <h1>The Materials Project</h1>
+      </div>
+      <PeriodicTable searchInput={searchInput} setSearchInput={setSearchInput} handleSearchEnter={handleSearchEnter} handleKeyDown={handleKeyDown} />
       <div className='material-container'>
         <div className='data-header'>
-          <p><b>{materials.length} Materials</b>
-            <b>{totalDoc.total_doc}</b>
+          <p> {isLoading && searchInput !== '' ? `${totalDoc.total_doc} Materials Match your search...` : <p>{`All ${totalDoc.total_doc} Materials`}</p>}</p>
+          <p>
+            {isLoading && materialData.length > 1 ?
+              /* <p>{`Showing ${currentPage === 1 ? '1' : (currentPage * itemsPerPage) - (itemsPerPage - 1)}-${currentPage * itemsPerPage}`}</p>  */
+              <p>{`1-${currentPage * itemsPerPage}`}</p>
+              : <h3>Loading...</h3>
+            }
           </p>
         </div>
         <div className='material-data'>
-          <div className='id_field'>
-            <table border={1}>
-              <thead>
-                <tr>
-                  <th className='th'>Material ID</th>
-                </tr>
-              </thead>
-              <tbody>
-                {materials.slice(currentPage * 10 - 10, currentPage * 10).map((element) => (
-                  <tr key={element.material_id} className='ele-data'>
-                    <td>{element.material_id}</td>
+          {materialData.length !== 0 &&
+            <div className='data_field'>
+              <table border={1}>
+                <thead>
+                  <tr>
+                    <th className='th'>Material ID</th>
+                    <th className='th'>Formula</th>
+                    <th className='th'>Crystal System</th>
+                    <th className='th'>Space Group System</th>
+                    <th className='th'>Sites</th>
+                    <th className='th'>Energy Above Hull</th>
+                    <th className='th'>Band Gap</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className='data_field'>
-            <table border={1}>
-              <thead>
-                <tr>
-                  <th className='th'>Formula</th>
-                  <th className='th'>Crystal System</th>
-                  <th className='th'>Space Group System</th>
-                  <th className='th'>Sites</th>
-                  <th className='th'>Energy Above Hull</th>
-                  <th className='th'>Band Gap</th>
-                </tr>
-              </thead>
-              <tbody>
-                {materialIdData && materialIdData.slice(currentPage * 10 - 10, currentPage * 10).map((ele, index) => (
-                  <tr key={index}>
-                    <td>{ele.data[0].formula_pretty}</td>
-                    <td>{ele.data[0].symmetry.crystal_system}</td>
-                    <td>{ele.data[0].symmetry.symbol}</td>
-                    <td>{ele.data[0].nsites}</td>
-                    <td>{ele.data[0].energy_above_hull.toFixed(2)}</td>
-                    <td>{ele.data[0].band_gap.toFixed(2)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {materialData
+                    /* .slice(currentPage * 10 - itemsPerPage, currentPage * itemsPerPage) */
+                    .map((ele, index) => (
+                      <tr key={index}>
+                        <td>{ele.material_id}</td>
+                        <td>{ele.formula_pretty}</td>
+                        <td>{ele.symmetry.crystal_system}</td>
+                        <td>{ele.symmetry.symbol}</td>
+                        <td>{ele.nsites}</td>
+                        <td>{ele.energy_above_hull.toFixed(2)}</td>
+                        <td>{ele.band_gap.toFixed(2)}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          }
         </div>
       </div>
-      {/* <Pagination materialIdData={materialIdData} materials={materials} currentPage={currentPage} setCurrentPage={setCurrentPage} /> */}
+      <Pagination materialData={materialData} currentPage={currentPage} setCurrentPage={setCurrentPage} totalDoc={totalDoc} itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />
     </div>
   );
 }
