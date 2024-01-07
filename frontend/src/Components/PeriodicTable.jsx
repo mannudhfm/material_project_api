@@ -21,7 +21,7 @@ const PeriodicTable = ({ searchInput, setSearchInput, handleSearchEnter, handleK
     const separatorOne = selectedElement === elementsArray[0] && "-"
     const separatorTwo = selectedElement === elementsArray[1] && ","
     const separatorThree = selectedElement === elementsArray[2] && ""
-    console.log(selectedElement)
+
     const [separator, setSeparator] = useState(separatorOne)
 
     // const doNotShowSymbol = selectedElement === elementsArray[1]

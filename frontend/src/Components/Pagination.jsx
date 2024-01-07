@@ -11,7 +11,6 @@ const Pagination = ({ materialData, currentPage, setCurrentPage, totalDoc, items
 
     const handlePageClick = (page) => {
         setCurrentPage(page.selected + 1);
-        console.log(currentPage)
     };
 
     const handlePerPageChange = (e) => {

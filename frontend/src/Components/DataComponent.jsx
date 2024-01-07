@@ -20,7 +20,6 @@ function DataComponent() {
 
   const totalItems = totalDoc.total_doc
   const itemsPerPageChanged = itemsPerPage === 10
-  console.log(itemsPerPageChanged)
 
   const endPoint = containsNumbers ? `formula=${searchInput}` : `chemsys=${searchInput}`
 
@@ -52,11 +51,6 @@ function DataComponent() {
   useEffect(() => {
     fetchmaterialData()
   }, [itemsPerPage, currentPage])
-
-  console.log(materialData)
-  console.log(itemsPerPage)
-  console.log(currentPage)
-  console.log(totalItems)
 
   return (
     <div to='' className='data-component' style={{ textDecoration: "none", color: "black" }}>
