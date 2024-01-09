@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "./server.js",
+            "dest": "build"
+        }
+    ],
+    "rewrites": [
+        {
+            "source": "/materials/summary/(.*)",
+            "destination": "/materials/summary"
+        }
+    ]
+}
