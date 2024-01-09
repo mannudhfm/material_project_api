@@ -22,7 +22,7 @@ const PeriodicTable = ({ searchInput, setSearchInput, handleSearchEnter, handleK
     const separatorTwo = selectedElement === elementsArray[1] && ","
     const separatorThree = selectedElement === elementsArray[2] && ""
 
-    const [separator, setSeparator] = useState(separatorOne)
+    // const [separator, setSeparator] = useState(separatorOne)
 
     // const doNotShowSymbol = selectedElement === elementsArray[1]
 

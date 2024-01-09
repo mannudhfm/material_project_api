@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PeriodicTable from './PeriodicTable';
 import '../App.css'
 import Pagination from './Pagination';
 import { BASE_URL, _fields } from '../utils';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 function DataComponent() {
   const [materialData, setMaterialData] = useState([])
@@ -16,16 +16,15 @@ function DataComponent() {
   const [clickEnter, setClickEnter] = useState(false);
   const containsNumbers = /\d/.test(searchInput);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const totalItems = totalDoc.total_doc
-  const itemsPerPageChanged = itemsPerPage === 10
+  // const itemsPerPageChanged = itemsPerPage === 10
 
   const endPoint = containsNumbers ? `formula=${searchInput}` : `chemsys=${searchInput}`
-
   const activeEndPoint = searchInput !== '' ? endPoint : ''
 
-  const fetchmaterialData = useCallback(async () => {
+  const fetchmaterialData = async () => {
     try {
       const { data } = await axios.get(`${BASE_URL}/${activeEndPoint}&_page=${currentPage}&_per_page=${itemsPerPage}&_fields=${_fields}`);
       setMaterialData(data.data)
@@ -34,7 +33,7 @@ function DataComponent() {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  })
+  }
 
   const handleSearchEnter = () => {
     fetchmaterialData()
@@ -96,7 +95,6 @@ function DataComponent() {
                     <th className='th'>Sites</th>
                     <th className='th'>Energy Above Hull</th>
                     <th className='th'>Band Gap</th>
-                    <th className='th'>Species</th>
                     <th className='th'>Density</th>
                     <th className='th'>Ordering</th>
                   </tr>
@@ -113,7 +111,6 @@ function DataComponent() {
                         <td>{ele.nsites}</td>
                         <td>{ele.energy_above_hull.toFixed(2)}</td>
                         <td>{ele.band_gap.toFixed(2)}</td>
-                        <td>{ele.possible_species}</td>
                         <td>{ele.density.toFixed()}</td>
                         <td>{ele.ordering}</td>
                       </tr>
