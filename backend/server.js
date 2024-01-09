@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const dotenv = require('dotenv');
 const app = express();
 dotenv.config()
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3001;
 
 app.use(morgan('dev'));
 

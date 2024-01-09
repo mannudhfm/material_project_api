@@ -1,6 +1,4 @@
 import React from 'react'
-import { FaArrowLeft } from "react-icons/fa";
-import { FaArrowRight } from "react-icons/fa";
 import ReactPaginate from 'react-paginate'
 import '../App.css'
 
