@@ -1,6 +1,5 @@
 {
   "homepage": "https://mannudhfm.github.io/material_project_api",
-  "name": "material_project_api",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

@@ -49,6 +49,7 @@ function DataComponent() {
 
   useEffect(() => {
     fetchmaterialData()
+    // eslint-disable-next-line
   }, [itemsPerPage, currentPage])
 
   return (
