@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, { useState } from 'react'
 import '../App.css'
 import data from '../periodic-table.json'
 
@@ -71,6 +71,7 @@ const PeriodicTable = ({ searchInput, setSearchInput, handleSearchEnter, handleK
                 <div className='search-div'>
                     <p>Materials</p>
                     <input type="text"
+                        id='input'
                         placeholder='e.g. Li-Fe or Li,Fe or Li3Fe or mp-19017'
                         value={searchInput}
                         onChange={handleChange}

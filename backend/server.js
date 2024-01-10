@@ -19,7 +19,7 @@ let options = {
     json: true,
     headers: {
         'Content-Type': 'application/json',
-        'Accept': 'text/plain',
+        // 'Accept': 'text/plain',
         'X-API-KEY': apiKey
     }
 };
